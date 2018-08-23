@@ -1,6 +1,9 @@
 package com.cherifcodes.popularmovies;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -39,11 +42,25 @@ public class MainActivity extends AppCompatActivity implements MovieClickListene
 
         ButterKnife.bind(this);
         mMovieAdapter = new MovieAdapter(this);
-        getMovieList();
+
         GridLayoutManager layoutManager = new GridLayoutManager(this,
                 NUM_RECYCLER_VIEW_COLUMNS);
         mMovieListRecyclerView.setLayoutManager(layoutManager);
         mMovieListRecyclerView.setAdapter(mMovieAdapter);
+
+        // Save internet connection information in a boolean variable
+        ConnectivityManager cm =
+                (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+        if (isConnected) { // There is an internet connection
+            // Start the AsyncTask to fetch the data in parallel
+            getMovieList();
+        } else { // There is no internet connection, show a toast message.
+            Toast.makeText(this, R.string.no_internet_error_message, Toast.LENGTH_LONG)
+                    .show();
+        }
     }
 
     @Override

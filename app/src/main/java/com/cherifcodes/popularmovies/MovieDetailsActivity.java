@@ -1,8 +1,7 @@
 package com.cherifcodes.popularmovies;
 
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -33,15 +32,19 @@ public class MovieDetailsActivity extends AppCompatActivity {
         Bundle extra = getIntent().getExtras();
         Movie clickedMovie = extra.getParcelable(IntentConstants.CLICKED_MOVIE_ITEM);
 
-        mOriginalTitleTextView.setText(clickedMovie.getOriginalTitle());
-        mOverviewTextView.setText(clickedMovie.getOverview());
-        mReleaseDateTextView.append(clickedMovie.getReleaseDate());
-        mVoteAverage.append(String.valueOf(clickedMovie.getVoteAverage()));
+        if (clickedMovie != null) {
+            mOriginalTitleTextView.setText(clickedMovie.getOriginalTitle());
+            mOverviewTextView.setText(clickedMovie.getOverview());
+            mReleaseDateTextView.append(clickedMovie.getReleaseDate());
+            mVoteAverage.append(String.valueOf(clickedMovie.getVoteAverage()));
 
-        //Load and display the movie poster using the Picasso library.
-        Picasso.with(this)
-                .load(NetworkUtils.POSTER_BASE_URL + clickedMovie.getPosterString())
-                .error(R.drawable.ic_missing_image_error) //Displays this image if image failed to load
-                .into(mPosterImageView);
+            //Load and display the movie poster using the Picasso library.
+            Picasso.with(this)
+                    .load(NetworkUtils.POSTER_BASE_URL + clickedMovie.getPosterString())
+                    .error(R.drawable.ic_missing_image_error) //Displays this image if image failed to load
+                    .into(mPosterImageView);
+        } else {
+            Log.e(MovieDetailsActivity.class.getSimpleName(), "Null clickedMovie");
+        }
     }
 }
