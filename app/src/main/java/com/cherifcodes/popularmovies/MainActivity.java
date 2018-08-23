@@ -5,7 +5,6 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,7 +30,7 @@ public class MainActivity extends AppCompatActivity implements MovieClickListene
     private static final int NUM_RECYCLER_VIEW_COLUMNS = 2;
     private MovieAdapter mMovieAdapter;
 
-    String mSortMovieListBy = NetworkUtils.SORT_BY_POPULARITY;
+    String mSortMovieListBy = NetworkUtils.BASE_URL_POPULAR;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,13 +58,10 @@ public class MainActivity extends AppCompatActivity implements MovieClickListene
         int itemId = item.getItemId();
 
         if (itemId == R.id.item_popularity_sort) {
-            mSortMovieListBy = NetworkUtils.SORT_BY_POPULARITY;
+            mSortMovieListBy = NetworkUtils.BASE_URL_POPULAR;
             getMovieList();
-        } else if (itemId == R.id.item_release_date_sort) {
-            mSortMovieListBy = NetworkUtils.SORT_BY_RELEASE_DATE;
-            getMovieList();
-        } else if (itemId == R.id.item_vote_average_sort) {
-            mSortMovieListBy = NetworkUtils.SORT_BY_VOTE_AVERAGE;
+        } else if (itemId == R.id.item_top_rated_sort) {
+            mSortMovieListBy = NetworkUtils.BASE_URL_TOP_RATED;
             getMovieList();
         } else {
             //This condition is unlikely to occur, but I handle it just for completeness.
